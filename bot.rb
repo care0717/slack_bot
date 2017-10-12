@@ -1,5 +1,5 @@
 require 'slack'
-Slack.configure {|config| config.token = ENV[] }
+Slack.configure {|config| config.token = ENV["SLACKBOT_TOKEN"] }
 client = Slack.realtime
 
 client.on :hello do
