@@ -19,7 +19,7 @@ end
 
 client.on :message do |data|
   if data['text'].include?("Hello bot")
-    post(data['channel'], "hi")
+    post(data['channel'], "hii")
   end
 end
 
