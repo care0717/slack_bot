@@ -18,7 +18,7 @@ def post(channel, message)
 end
 
 client.on :message do |data|
-  if data['text'].include?("Hello bot")
+  if data['text'].include?("@ruby_bot")
     post(data['channel'], "hii")
   end
 end
