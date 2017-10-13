@@ -1,6 +1,7 @@
 require 'slack'
 require 'json'
 require './responce'
+require './homepage_request'
 
 Slack.configure {|config| config.token = ENV["SLACKBOT_TOKEN"] }
 client = Slack.realtime
@@ -12,6 +13,7 @@ end
 
 pattern = {}
 pattern["天気"] = "多分晴れ"
+
 
 client.on :message do |data|
   if data['text'].include?("<@U7H8F99HT>")
