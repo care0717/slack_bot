@@ -1,5 +1,4 @@
 require 'slack'
-require 'json'
 require './responce'
 require './homepage_request'
 

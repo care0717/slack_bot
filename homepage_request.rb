@@ -1,6 +1,4 @@
-#webに接続するためのライブラリ
 require "open-uri"
-#クレイピングに使用するライブラリ
 require "nokogiri"
 
 
@@ -10,7 +8,11 @@ def easy_to_use(schedule)
     day = Date.parse(each.search("th")[0].content).strftime("%Y-%m-%d")
     time = each.search("td")[1].content
     content = each.search("td")[2].content
-    res.store(day, [time, content])
+    if !res.has_key?(day)
+      res.store(day, [time, content])
+    else
+      res[day].push(time, content)
+    end
   }
   return res
 end
