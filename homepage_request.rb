@@ -18,7 +18,7 @@ def easy_to_use(schedule)
 end
 
 
-def schedule_request
+def schedule_request(text)
   url = "https://p-grp.nucleng.kyoto-u.ac.jp/lab/"
   #取得するhtml用charset
   charset = nil
@@ -29,7 +29,14 @@ def schedule_request
   ).read
 
   # Nokogiri で切り分け
-  schedule_wraped = Nokogiri::HTML.parse(fh,nil,charset).search("table")[2]
-  schedule = schedule_wraped.search("tr")[1..-1]
-  return easy_to_use(schedule)
+  case text
+  when "予定" then
+    schedule_wraped = Nokogiri::HTML.parse(fh,nil,charset).search("table")[2]
+    schedule = schedule_wraped.search("tr")[1..-1]
+    return easy_to_use(schedule)
+  when "mura" then
+    schedule_wraped = Nokogiri::HTML.parse(fh,nil,charset).search("table")[3]
+    schedule = schedule_wraped.search("tr")[1..-1]
+    return easy_to_use(schedule)
+  end
 end
