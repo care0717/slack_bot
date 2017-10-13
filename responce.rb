@@ -22,6 +22,7 @@ def responce(data, pattern)
     else
       post(data['channel'], "今日の予定はありません")
     end
+    
   when "天気" then
     post(data['channel'], "多分晴れ")
   else
