@@ -31,11 +31,11 @@ def schedule_request(text)
   # Nokogiri で切り分け
   case text
   when "予定" then
-    schedule_wraped = Nokogiri::HTML.parse(fh,nil,charset).search("table")[2]
+    schedule_wraped = Nokogiri::HTML.parse(fh,nil,charset).css('.schedule')
     schedule = schedule_wraped.search("tr")[1..-1]
     return easy_to_use(schedule)
   when "mura" then
-    schedule_wraped = Nokogiri::HTML.parse(fh,nil,charset).search("table")[3]
+    schedule_wraped = Nokogiri::HTML.parse(fh,nil,charset).css('.trip_sche')
     schedule = schedule_wraped.search("tr")[1..-1]
     return easy_to_use(schedule)
   end
