@@ -15,8 +15,8 @@ end
 def responce(data, pattern)
   text = data['text'][12..-1].strip
   case text
-  when "予定" then
-    schedule = schedule_request
+  when "予定","mura" then
+    schedule = schedule_request(text)
     if schedule.has_key?(Date.today.strftime("%Y-%m-%d"))
       post(data['channel'], schedule[Date.today.strftime("%Y-%m-%d")].join(" "))
     else
