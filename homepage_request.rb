@@ -49,7 +49,7 @@ end
 
 def html_to_text(schedule_html, text)
   case text
-  when "予定" then
+  when "今日" then
     schedule = to_schedules(schedule_html.css('.schedule').search("tr")[1..-1])
     return to_text(schedule.today)
   when "mura" then

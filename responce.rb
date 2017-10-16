@@ -27,7 +27,7 @@ end
 def responce(data, pattern)
   text = data['text'][12..-1].strip
   case text
-  when "予定", "mura", "ゼミ" then
+  when "今日", "mura", "ゼミ" then
     schedule_html = schedule_request
     post(data['channel'], html_to_text(schedule_html, text))
   when "天気" then
