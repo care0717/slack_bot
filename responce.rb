@@ -24,7 +24,7 @@ def schedule_request
   return  Nokogiri::HTML.parse(fh, nil, charset)
 end
 
-def responce(data, pattern)
+def responce(data)
   text = data['text'][12..-1].strip
   case text
   when "今日", "mura", "ゼミ" then
