@@ -54,6 +54,8 @@ def post(channel, message)
 end
 
 schedule = schedule_request("予定")
+channel = "#test"
 if schedule.has_key?(Date.today.strftime("%Y-%m-%d"))
-  post("#test", schedule[Date.today.strftime("%Y-%m-%d")].join(" "))
+  post(channel, "今日の予定")
+  post(channel, schedule[Date.today.strftime("%Y-%m-%d")].join(" "))
 end
