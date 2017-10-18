@@ -8,7 +8,7 @@ def to_schedules(schedule)
     day = Date.parse(each.search('th')[0].content).strftime('%m-%d')
     time = each.search('td')[1].content
     content = each.search('td')[2].content
-    res.push({day: day, time: time, content: content})
+    res.push({ day: day, time: time, content: content })
   end
   return res
 end
