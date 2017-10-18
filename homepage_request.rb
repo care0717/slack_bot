@@ -2,27 +2,28 @@ require 'open-uri'
 require 'nokogiri'
 require './lib'
 
-
 def to_schedules(schedule)
   res = Schedules.new([])
-  schedule.each{ |each|
+  schedule.each do |each|
     day = Date.parse(each.search('th')[0].content).strftime('%m-%d')
     time = each.search('td')[1].content
     content = each.search('td')[2].content
-    res.push({day:day, time:time, content:content})
-  }
+    res.push({day: day, time: time, content: content})
+  end
   return res
 end
 
+#スケジュールを集めたクラス
 class Schedules < Array
   include ArrayToSelfConvert
   def today
-   res = self.select {|aSche| aSche[:day] ==  Date.today.strftime('%m-%d')}
-   res.each {|aSche| aSche.delete(:day) }
-   return res
+    res = select { |a_sche| a_sche[:day] == Date.today.strftime('%m-%d') }
+    res.each { |a_sche| a_sche.delete(:day) }
+    return res
   end
+
   def latest_semi
-    [self.select {|aSche| aSche[:content].include?('ゼミ')}[-1]]
+    [select { |a_sche| a_sche[:content].include?('ゼミ') }[-1]]
   end
 end
 
@@ -41,9 +42,7 @@ def to_text(schedules)
 end
 
 def strip_single_sch(array)
-  if array.class <= Array && array.size == 1
-    return array[0]
-  end
+  return array[0] if array.class <= Array && array.size == 1
   return array
 end
 
