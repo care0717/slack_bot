@@ -2,7 +2,7 @@ require 'slack'
 require './responce'
 require './homepage_request'
 
-Slack.configure {|config| config.token = ENV["SLACKBOT_TOKEN"] }
+Slack.configure {|config| config.token = ENV['SLACKBOT_TOKEN'] }
 client = Slack.realtime
 
 client.on :hello do
@@ -11,7 +11,7 @@ end
 
 
 client.on :message do |data|
-  if data['text'].include?("<@U7H8F99HT>")
+  if data['text'].include?('<@U7H8F99HT>')
     responce(data)
   end
 end

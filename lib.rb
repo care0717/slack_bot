@@ -1,7 +1,7 @@
 module ArrayToSelfConvert
   def self.included(klass)
     methods = ::Array.public_instance_methods(true) - ::Kernel.public_instance_methods(false)
-    methods |= ["to_s","to_a","inspect","==","=~","==="]
+    methods |= ['to_s','to_a','inspect','==','=~','===']
     methods.each {|method|
       define_method(method) {|*args, &block|
         res = super(*args, &block)
