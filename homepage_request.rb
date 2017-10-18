@@ -1,42 +1,62 @@
 require "open-uri"
 require "nokogiri"
+require './lib'
 
 
-def easy_to_use(schedule)
-  res = {}
+def to_schedules(schedule)
+  res = Schedules.new([])
   schedule.each{ |each|
-    day = Date.parse(each.search("th")[0].content).strftime("%Y-%m-%d")
+    day = Date.parse(each.search("th")[0].content).strftime("%m-%d")
     time = each.search("td")[1].content
     content = each.search("td")[2].content
-    if !res.has_key?(day)
-      res.store(day, [time, content])
-    else
-      res[day].push(time, content)
-    end
+    res.push({day:day, time:time, content:content})
   }
   return res
 end
 
+class Schedules < Array
+  include ArrayToSelfConvert
+  def today
+   res = self.select {|aSche| aSche[:day] ==  Date.today.strftime("%m-%d")}
+   res.each {|aSche| aSche.delete(:day) }
+   return res
+  end
+  def latest_semi
+    [self.select {|aSche| aSche[:content].include?("ゼミ")}[-1]]
+  end
+end
 
-def schedule_request(text)
-  url = "https://p-grp.nucleng.kyoto-u.ac.jp/lab/"
-  #取得するhtml用charset
-  charset = nil
+def to_text(schedules)
+  if schedules.empty?
+    return '今日の予定はありません．'
+  elsif schedules.size == 1
+    return strip_single_sch(schedules).values.join(' ')
+  else
+    res = []
+    schedules.each do |sche|
+      res.push(sche.values.join(' '))
+    end
+    return res.join('¥n')
+  end
+end
 
-  fh = open(
-    url,
-    :http_basic_authentication => [ENV["PGRP_ID"], ENV["PGRP_PASS"]],
-  ).read
+def strip_single_sch(array)
+  if array.class <= Array && array.size == 1
+    return array[0]
+  end
+  return array
+end
 
-  # Nokogiri で切り分け
+def html_to_text(schedule_html, text)
   case text
-  when "予定" then
-    schedule_wraped = Nokogiri::HTML.parse(fh,nil,charset).css('.schedule')
-    schedule = schedule_wraped.search("tr")[1..-1]
-    return easy_to_use(schedule)
+  when "今日" then
+    schedule = to_schedules(schedule_html.css('.schedule').search("tr")[1..-1])
+    return to_text(schedule.today)
   when "mura" then
-    schedule_wraped = Nokogiri::HTML.parse(fh,nil,charset).css('.trip_sche')
-    schedule = schedule_wraped.search("tr")[1..-1]
-    return easy_to_use(schedule)
+    schedule = to_schedules(schedule_html.css('.trip_sche').search("tr")[1..-1])
+    return to_text(schedule.today)
+  when 'ゼミ' then
+    schedule = to_schedules(schedule_html.css('.schedule').search("tr")[1..-1])
+    return to_text(schedule.latest_semi)
   end
 end

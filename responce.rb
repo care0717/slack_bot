@@ -11,18 +11,25 @@ def post(channel, message)
   Slack.chat_postMessage params
 end
 
+def schedule_request
+  url = "https://p-grp.nucleng.kyoto-u.ac.jp/lab/"
+  #取得するhtml用charset
+  charset = nil
+  fh = open(
+    url,
+    :http_basic_authentication => [ENV["PGRP_ID"], ENV["PGRP_PASS"]],
+  ).read
 
-def responce(data, pattern)
+  # Nokogiri で切り分け
+  return  Nokogiri::HTML.parse(fh, nil, charset)
+end
+
+def responce(data)
   text = data['text'][12..-1].strip
   case text
-  when "予定","mura" then
-    schedule = schedule_request(text)
-    if schedule.has_key?(Date.today.strftime("%Y-%m-%d"))
-      post(data['channel'], schedule[Date.today.strftime("%Y-%m-%d")].join(" "))
-    else
-      post(data['channel'], "今日の予定はありません")
-    end
-    
+  when "今日", "mura", "ゼミ" then
+    schedule_html = schedule_request
+    post(data['channel'], html_to_text(schedule_html, text))
   when "天気" then
     post(data['channel'], "多分晴れ")
   else
