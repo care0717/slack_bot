@@ -1,6 +1,6 @@
 require 'open-uri'
 require 'nokogiri'
-require './lib'
+require_relative 'lib'
 
 def to_schedules(schedule)
   res = Schedules.new([])
