@@ -1,4 +1,5 @@
 require './homepage_request'
+require './ssh_request'
 
 def post(channel, message)
   params = {
@@ -32,6 +33,14 @@ def responce(data)
     post(data['channel'], html_to_text(schedule_html, text))
   when '天気' then
     post(data['channel'], '多分晴れ')
+  when 'vanilla' then
+    user = {name: ENV['SSH_NAME'], pass: ENV['SSH_PASS']}
+    res = request_to_server(text, 'squeue', user).split('\n')[1..-1].join('\n')
+    if res.empty?
+      post(data['channel'], 'jobはありません．')
+    else
+      post(data['channel'], res)
+    end
   else
     post(data['channel'], 'なんの用だ')
   end
