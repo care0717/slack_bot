@@ -1,4 +1,5 @@
 require './homepage_request'
+require './get_scores'
 
 def post(channel, message)
   params = {
@@ -24,8 +25,17 @@ def schedule_request
   return  Nokogiri::HTML.parse(fh, nil, charset)
 end
 
+def responce_by_watson(data)
+  mimetype = data['file']['mimetype']
+  if mimetype&.include?("image")
+    scores = calc_scores_of_image(data["file"]["id"])
+    post(data['channel'], scores.to_s[1..-2].tr(",", "\n"))
+  end
+end
+
 def responce(data)
   text = data['text'][12..-1].strip
+
   case text
   when '今日', 'mura', 'ゼミ' then
     schedule_html = schedule_request
