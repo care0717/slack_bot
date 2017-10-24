@@ -34,7 +34,7 @@ def responce_by_watson(data)
 end
 
 def responce(data)
-  text = data['text'][12..-1].strip
+  text = data['text'][12..-1]&.strip
 
   case text
   when '今日', 'mura', 'ゼミ' then

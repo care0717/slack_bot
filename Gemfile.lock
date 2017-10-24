@@ -22,6 +22,7 @@ GEM
     netrc (0.11.0)
     nokogiri (1.8.1)
       mini_portile2 (~> 2.3.0)
+    power_assert (1.1.0)
     rest-client (2.0.2)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
@@ -31,6 +32,8 @@ GEM
       faraday_middleware (~> 0.10.0)
       faye-websocket (~> 0.10.6)
       multi_json (~> 1.0, >= 1.0.3)
+    test-unit (3.2.6)
+      power_assert
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.4)
@@ -45,6 +48,7 @@ DEPENDENCIES
   nokogiri
   rest-client
   slack-api
+  test-unit
 
 BUNDLED WITH
    1.15.4
