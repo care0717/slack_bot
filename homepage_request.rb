@@ -1,6 +1,18 @@
-require 'open-uri'
-require 'nokogiri'
 require_relative 'lib'
+
+def html_to_text(schedule_html, text)
+  case text
+  when '今日' then
+    schedule = to_schedules(schedule_html.css('.schedule').search('tr')[1..-1])
+    return schedule.today.to_text
+  when 'mura' then
+    schedule = to_schedules(schedule_html.css('.trip_sche').search('tr')[1..-1])
+    return schedule.today.to_text
+  when 'ゼミ' then
+    schedule = to_schedules(schedule_html.css('.schedule').search('tr')[1..-1])
+    return schedule.latest_semi.to_text
+  end
+end
 
 def to_schedules(schedule)
   res = Schedules.new([])
@@ -42,23 +54,5 @@ class Schedules < Array
   def strip_single_sch(array)
     return array[0] if array.class <= Array && array.size == 1
     return array
-  end
-end
-
-
-
-
-
-def html_to_text(schedule_html, text)
-  case text
-  when '今日' then
-    schedule = to_schedules(schedule_html.css('.schedule').search('tr')[1..-1])
-    return schedule.today.to_text
-  when 'mura' then
-    schedule = to_schedules(schedule_html.css('.trip_sche').search('tr')[1..-1])
-    return schedule.today.to_text
-  when 'ゼミ' then
-    schedule = to_schedules(schedule_html.css('.schedule').search('tr')[1..-1])
-    return schedule.latest_semi.to_text
   end
 end
