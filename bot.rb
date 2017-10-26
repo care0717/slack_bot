@@ -10,7 +10,9 @@ client.on :hello do
 end
 
 client.on :message do |data|
-  responce(data) if data['text'].include?('<@U7H8F99HT>')
+  puts data
+  responce(data) if data['text']&.include?('<@U7H8F99HT>')
+  responce_by_watson(data) if data['channel'] == 'C7P01TP8C' && data['text']&.include?('uploaded')
 end
 
 client.start
