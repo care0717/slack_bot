@@ -2,7 +2,8 @@ require 'rest-client'
 require 'json'
 require 'open-uri'
 require 'nokogiri'
-require './bluemix'
+require_relative './bluemix'
+
 
 def calc_scores_of_image(image_file_id)
   token = ENV['PGRP_LEGACY_TOKEN']
