@@ -1,6 +1,6 @@
-require "./spec_helper"
+require_relative "./spec_helper"
 require 'rspec'
-require '../slack_class'
+require_relative '../slack_class'
 require 'timecop'
 
 test_today = Date.new(2017, 11, 17)

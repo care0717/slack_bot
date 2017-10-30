@@ -101,6 +101,6 @@ RSpec.configure do |config|
 end
 
 def get_test_nokogiri_obj
-  fh = open('./test.html')
+  fh = open('spec/test.html')
   return  (Nokogiri::HTML.parse(fh, nil, nil))
 end
