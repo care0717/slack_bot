@@ -1,5 +1,5 @@
 require_relative './schedule_class'
-require_relative './get_scores'
+require_relative './bluemix_api'
 require_relative './mylib'
 
 LAB_URL = 'https://p-grp.nucleng.kyoto-u.ac.jp/lab/'
