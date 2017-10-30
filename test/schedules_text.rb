@@ -1,5 +1,8 @@
 require 'test/unit'
+require 'date'
+
 require '../homepage_request'
+
 
 class TestShedules < Test::Unit::TestCase
 

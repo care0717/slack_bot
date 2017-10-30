@@ -11,12 +11,14 @@ bundle install
 PGRP_ID=(p-grpのホームページに入るためのid)
 PGRP_PASS=(p-grpのホームページに入るためのpassword)
 SLACKBOT_TOKEN=(Slackのボットにアクセスするためのtoken)
+VR_BLUEMIX_KEY=(watson apiにアクセスするためのtoken)
+PGRP_LEGACY_TOKEN=(slackのpgrpにアクセスするためのlegacy token)
 ```
 
 ## 使用方法
-`bot.rb`がmainなので
+`main.rb`がmainなので
 ```
-ruby bot.rb
+ruby main.rb
 ```
 と打てば、ずっとslackを監視し続けるはずです。
 
@@ -26,3 +28,6 @@ ruby bot.rb
 今日　=>　今日の全体の予定を返します。  
 mura　=>　今日の村上先生の予定を返します。  
 ゼミ　=>　直近のゼミの予定を返します．
+
+## watsonチャンネル
+watsonチャンネルに画像をuploadするとその画像の特徴量を教えてくれます．
