@@ -17,7 +17,6 @@ describe SlackText do
           #allow(slack_text).to receive(:html_to_text)
           analyzed_text = slack_text.analyze
           expect(analyzed_text).to eq "11-17 15:00 ゼミ（tokamaks:第16回-山本，加藤）"
-          expect(analyzed_text.class).to eq String
         end
       end
       it "今日に予定がなければ「予定はありません」を返す" do
@@ -26,7 +25,6 @@ describe SlackText do
           #allow(slack_text).to receive(:html_to_text)
           analyzed_text = slack_text.analyze
           expect(analyzed_text).to eq "予定はありません．"
-          expect(analyzed_text.class).to eq String
         end
       end
     end
@@ -39,7 +37,6 @@ describe SlackText do
           #allow(slack_text).to receive(:html_to_text)
           analyzed_text = slack_text.analyze
           expect(analyzed_text).to eq "11-17 13:00-2:30 村上：桂（講義：核融合プラズマ工学）"
-          expect(analyzed_text.class).to eq String
         end
       end
       it "今日に予定がなければ「予定はありません」を返す" do
@@ -48,7 +45,6 @@ describe SlackText do
           #allow(slack_text).to receive(:html_to_text)
           analyzed_text = slack_text.analyze
           expect(analyzed_text).to eq "予定はありません．"
-          expect(analyzed_text.class).to eq String
         end
       end
     end
@@ -61,7 +57,6 @@ describe SlackText do
           #allow(slack_text).to receive(:html_to_text)
           analyzed_text = slack_text.analyze
           expect(analyzed_text).to eq "11-17 15:00 ゼミ（tokamaks:第16回-山本，加藤）"
-          expect(analyzed_text.class).to eq String
         end
       end
     end
