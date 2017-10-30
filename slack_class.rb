@@ -5,6 +5,7 @@ require_relative './mylib'
 LAB_URL = 'https://p-grp.nucleng.kyoto-u.ac.jp/lab/'
 
 class SlackFile
+  include BluemixVRApi
   def initialize(data)
     @file_mimetype = data['file']['mimetype']
     @file_id = data['file']['id']
