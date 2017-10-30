@@ -16,9 +16,9 @@ PGRP_LEGACY_TOKEN=(slackのpgrpにアクセスするためのlegacy token)
 ```
 
 ## 使用方法
-`bot.rb`がmainなので
+`main.rb`がmainなので
 ```
-ruby bot.rb
+ruby main.rb
 ```
 と打てば、ずっとslackを監視し続けるはずです。
 
