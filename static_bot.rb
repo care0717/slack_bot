@@ -1,3 +1,4 @@
+# coding: utf-8
 require 'slack'
 require 'open-uri'
 require 'nokogiri'
@@ -54,7 +55,8 @@ end
 
 schedule = schedule_request('予定')
 channel = '#全体'
-if schedule.key?(Date.today.strftime('%Y-%m-%d'))
-  post(channel, '今日の予定')
-  post(channel, schedule[Date.today.strftime('%Y-%m-%d')].join(' '))
+tommorow = (Date.today + 1).strftime('%Y-%m-%d')
+if schedule.key?(tommorow)
+  post(channel, '明日の予定')
+  post(channel, tommorow[5..-1] + ' ' + schedule[tommorow].join(' '))
 end
