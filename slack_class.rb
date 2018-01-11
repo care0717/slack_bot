@@ -1,3 +1,4 @@
+# coding: utf-8
 require_relative './schedule_class'
 require_relative './bluemix_api'
 require_relative './mylib'
@@ -21,18 +22,17 @@ end
 
 class SlackText
   include HTTPResources
-  def initialize(data)
-    @text = data['text']
+  def initialize(text)
+    @text = text
   end
 
   def analyze
-    text = @text[12..-1]&.strip
-    case text
+    case @text
     when '今日', 'mura', 'ゼミ' then
       schedule_html = fetch_html(LAB_URL, ENV['PGRP_ID'], ENV['PGRP_PASS'])
       #puts schedule_html
       #puts schedule_html.css('.schedule')
-      html_to_text(schedule_html, text)
+      html_to_text(schedule_html, @text)
     when '天気' then
       '多分晴れ'
     else
@@ -58,7 +58,7 @@ class SlackText
     def extract_from_html(schedule_html)
       res = []
       schedule_html.each do |each|
-        day = Date.parse(each.search('th')[0].content).strftime('%m-%d')
+        day = Date.parse(each.search('th')[0].content)#.strftime('%m-%d')
         time = each.search('td')[1].content
         content = each.search('td')[2].content
         res.push({ day: day, time: time, content: content })

@@ -4,12 +4,12 @@ require_relative 'lib'
 class Schedules < Array
   include ArrayToSelfConvert
   def today
-    res = select { |a_sche| a_sche[:day] == Date.today.strftime('%m-%d') }
+    res = select { |a_sche| a_sche[:day] == Date.today}
     return res
   end
 
   def latest_semi
-    Schedules.new([select { |a_sche| a_sche[:content].include?('ゼミ') }[-1]])
+    Schedules.new([select { |a_sche| a_sche[:content].include?('ゼミ')}[-1]])
   end
 
   def to_text

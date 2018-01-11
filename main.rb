@@ -22,7 +22,7 @@ end
 client.on :message do |data|
   puts data
   if data['text']&.include?('<@U7H8F99HT>') then
-    slack_text = SlackText.new(data)
+    slack_text = SlackText.new(data['text'][12..-1]&.strip)
     post(data['channel'], slack_text.analyze)
   end
   if data['channel'] == 'C7P01TP8C' && data['text']&.include?('uploaded')
