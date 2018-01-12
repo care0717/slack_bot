@@ -13,6 +13,7 @@ PGRP_PASS=(p-grpのホームページに入るためのpassword)
 SLACKBOT_TOKEN=(Slackのボットにアクセスするためのtoken)
 VR_BLUEMIX_KEY=(watson apiにアクセスするためのtoken)
 PGRP_LEGACY_TOKEN=(slackのpgrpにアクセスするためのlegacy token)
+GCP_VISION_TOKEN=(gcp vision apiにアクセスするためのtoken)
 ```
 
 ## 使用方法

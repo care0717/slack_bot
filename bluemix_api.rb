@@ -10,7 +10,6 @@ module BluemixVRApi
     revoke_api_url = "https://slack.com/api/files.revokePublicURL?token=#{token}&file=#{image_file_id}"
 
     res = JSON.parse(RestClient.get(public_api_url))
-
     public_url = res['file']['permalink_public']
     charset = nil
     fh = open(

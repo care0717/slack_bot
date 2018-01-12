@@ -1,7 +1,9 @@
 # coding: utf-8
 require_relative './schedule_class'
 require_relative './bluemix_api'
+require_relative './gcp_vision'
 require_relative './mylib'
+require 'slack'
 
 LAB_URL = 'https://p-grp.nucleng.kyoto-u.ac.jp/lab/'
 
@@ -15,15 +17,23 @@ class SlackFile
   def analyze_by_watson
     if @file_mimetype&.include?("image")
       scores = calc_scores_of_image(@file_id)
-      scores.to_s[1..-2].tr(",", "\n")
+      scores.to_s[1..-2].tr(",", "\n").tr("\"", "")
+    end
+  end
+
+  def analyze_receipt
+    if @file_mimetype&.include?("image")
+      recipt = deal_receipt(@file_id)
+      recipt.to_s[1..-2].tr(",", "\n").tr("\"", "")
     end
   end
 end
 
 class SlackText
   include HTTPResources
-  def initialize(text)
-    @text = text
+  def initialize(data)
+    @text = data['text'][12..-1]&.strip
+    @channel = data['channel']
   end
 
   def analyze
@@ -33,11 +43,22 @@ class SlackText
       #puts schedule_html
       #puts schedule_html.css('.schedule')
       html_to_text(schedule_html, @text)
-    when '天気' then
-      '多分晴れ'
+    when /レシートから/ then
+      Slack.configure { |config| config.token = ENV['SLACKBOT_TOKEN'] }
+      client =  Slack::Client.new
+      messages = client.channels_history(channel: "#{@channel}")["messages"]
+      bot_message = messages.select{|m| m["username"] == "ruby_bot" && m["text"].include?("receipt") }
+      res = bot_message.flat_map{ |bm|
+        date = bm["text"].split("\n")[0].sub(/receipt/, "")
+        bm["text"].split("\n").select{|m| m.include?(@text.sub(/レシートから/, "").strip)}.unshift(date)}
+      res.to_s
+    when '説明してください' then
+      "精算チャンネルでレシートをアップしろ，そしたらそれを解析してあげよう\n
+      さらに「商品名 レシートから」と話しかけろ，そしたらその商品名の税込み価格を教えてあげよう"
     else
       'なんの用だ'
     end
+
   end
 
   private
