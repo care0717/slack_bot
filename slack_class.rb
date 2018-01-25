@@ -4,6 +4,7 @@ require_relative './bluemix_api'
 require_relative './gcp_vision'
 require_relative './mylib'
 require 'slack'
+require 'faraday'
 
 LAB_URL = 'https://p-grp.nucleng.kyoto-u.ac.jp/lab/'
 
@@ -44,7 +45,6 @@ class SlackText
       #puts schedule_html.css('.schedule')
       html_to_text(schedule_html, @text)
     when /レシートから/ then
-      Slack.configure { |config| config.token = ENV['SLACKBOT_TOKEN'] }
       client =  Slack::Client.new
       messages = client.channels_history(channel: "#{@channel}")["messages"]
       bot_message = messages.select{|m| m["username"] == "ruby_bot" && m["text"].include?("receipt") }
@@ -52,6 +52,16 @@ class SlackText
         date = bm["text"].split("\n")[0].sub(/receipt/, "")
         bm["text"].split("\n").select{|m| m.include?(@text.sub(/レシートから/, "").strip)}.unshift(date)}
       res.to_s
+    when '占い' then
+      file_path = get_uranai_result()
+      params = {
+        token: ENV['PGRP_LEGACY_TOKEN'],
+        channels: @channel,
+        file: Faraday::UploadIO.new(file_path, 'image/jpg'),
+        initial_comment: '占い結果です',
+      }
+      Slack.files_upload(params)
+      return ""
     when '説明してください' then
       "精算チャンネルでレシートをアップしろ，そしたらそれを解析してあげよう\n
       さらに「商品名 レシートから」と話しかけろ，そしたらその商品名の税込み価格を教えてあげよう"
@@ -85,5 +95,16 @@ class SlackText
         res.push({ day: day, time: time, content: content })
       end
       return res
+    end
+
+    def get_uranai_result()
+      random = Random.new(Time.now.to_i).rand(100)
+      if random <= 20
+        return "./images/daikyo.jpg"
+      elsif random >= 80
+        return "./images/daikichi.jpg"
+      else
+        return "./images/kichi.jpg"
+      end
     end
 end
