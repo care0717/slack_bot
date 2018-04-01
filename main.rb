@@ -22,7 +22,7 @@ client.on :message do |data|
   if data['channel'] == 'C7P01TP8C' && data['text']&.include?('uploaded')
     slack_file = SlackFile.new(data)
     post(data['channel'], slack_file.analyze_by_watson)
-  elsif data['channel'] == 'C7R8W166T' && data['text']&.include?('uploaded') && data['text']&.include?('レシート')
+  elsif data['channel'] == 'C7J6WHEQ7' && data['text']&.include?('uploaded') && data['text']&.include?('レシート')
     slack_file = SlackFile.new(data)
     post(data['channel'], "receipt #{Date.today}\n" + slack_file.analyze_receipt)
   elsif data['text']&.include?('<@U7H8F99HT>') && !data['text']&.include?('uploaded')
