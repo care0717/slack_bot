@@ -1,4 +1,7 @@
-require './slack_class'
+require_relative './src/route'
+require 'slack'
+
+include Route
 
 Slack.configure { |config| config.token = ENV['SLACKBOT_TOKEN'] }
 client = Slack.realtime
@@ -19,16 +22,14 @@ end
 
 client.on :message do |data|
   puts data
-  if data['channel'] == 'C7P01TP8C' && data['text']&.include?('uploaded')
-    slack_file = SlackFile.new(data)
-    post(data['channel'], slack_file.analyze_by_watson)
-  elsif data['channel'] == 'C7J6WHEQ7' && data['text']&.include?('uploaded') && data['text']&.include?('レシート')
-    slack_file = SlackFile.new(data)
-    post(data['channel'], "receipt #{Date.today}\n" + slack_file.analyze_receipt)
-  elsif data['text']&.include?('<@U7H8F99HT>') && !data['text']&.include?('uploaded')
-    slack_text = SlackText.new(data)
-    post(data['channel'], slack_text.analyze)
+  channel = data['channel']
+  temp_client = Slack::Client.new
+  histories = temp_client.channels_history(channel: "#{channel}")["messages"]
+  message, file_upload_param = routing(data, histories)
+  if file_upload_param
+    Slack.files_upload(file_upload_param)
   end
+  post(channel, message)
 end
 
 client.start
